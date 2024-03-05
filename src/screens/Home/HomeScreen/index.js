@@ -94,7 +94,7 @@ const daimondImg = require("../../../assets/Images/daimond.png")
                         start={{x: 0.2, y: 0.25}} end={{x: 0.9, y: 2.0}}
                         style={styles.linear}
                         >
-                       <Text style={{textAlign:"center", color:"#FFFFFF", fontFamily:"Now-Medium-BF6542f7137648d", fontSize:18}}>Write Gratitude</Text>
+                       <Text style={{textAlign:"center", color:"#FFFFFF", fontFamily:"Now-Medium-BF6542f7137648d", fontSize:18}} onPress={navigation.navigate("writeGratitude")}>Write Gratitude</Text>
                         </LinearGradient>
                         </TouchableOpacity>
 
