@@ -169,6 +169,47 @@ return data;
 
  
 );
+
+
+
+// Asynchronous thunk for logging in a user
+export const loginChild = createAsyncThunk(
+  'users/login',
+  async ({ email, password,navigation }, { rejectWithValue }) => {
+    console.log('email, password ReduexFile============================>',email, password);
+  
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    
+    
+      const response = await fetch("http://192.168.100.33:3030/api/v1/users/login ", {
+        method: 'POST',
+        body: JSON.stringify({ email,  password }),
+        ...config,
+      });
+
+      console.log("responseLogin", response)
+      const data = await response.json();
+      console.log("apiDataLogin", data?.message);
+      if (!response.ok) {
+       
+        Toast.error(data?.message)
+      console.log("date========================>");
+      }
+      else {
+        console.log('eeeeeeeeeeeeeeeeeeeeeeee');
+        navigation.navigate('MyTabs')
+        return data;
+      }
+ 
+    
+    
+  }
+);
 //  ht
 //  https://four-pillar-8ab34604fe05.herokuapp.com   
 // http://192.168.100.33:3030/api/v1/users/signup , 
@@ -281,6 +322,21 @@ const authSlice = createSlice({
       
     })
     .addCase(confirmPassword.rejected, (state, action) => {
+      state.loading = false;
+      state.error = payload;
+      state.status = STATUSES.ERROR;
+    })
+    .addCase(loginChild.pending, (state) => {
+      state.loading = true;
+      state.status = STATUSES.LOADING;
+    })
+    .addCase(loginChild.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.userInfo = payload.data.user;
+      state.status = STATUSES.SUCCESS;
+      console.log("payload",payload.data.user);
+    })
+    .addCase(loginChild.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
       state.status = STATUSES.ERROR;
